@@ -1,5 +1,7 @@
 package me::gnrtag::g_sect;
+use strict;
 use me::gnrtag::g_include;
+use me::gnrtag::g_notice;
 
 
 sub tag_on {
@@ -14,6 +16,7 @@ sub subcont {
   
   $lc_cont = &me::gnrtag::g_include::subcont();
   $lc_cont->tag('sect',\&tag_on,\&tag_off);
+  $lc_cont->tag(&me::gnrtag::g_notice::full_tag());
   
   return $lc_cont;
 }
