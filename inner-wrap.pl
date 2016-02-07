@@ -2,6 +2,7 @@ use strict;
 use argola;
 use chobxml02::context;
 use me::keytag::root_sect;
+use me::spcf::init_function;
 
 my $cntx;
 
@@ -42,6 +43,7 @@ if ( !(defined($strdate) ) )
 
 $cntx = &chobxml02::context::new();
 $cntx->tag('sect',&me::keytag::root_sect::tags());
+$cntx->initf(\&me::spcf::init_function::ftfunc);
 $cntx->parsefrom($srcroot);
 
 
