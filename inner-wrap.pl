@@ -3,16 +3,23 @@ use argola;
 use chobxml02::context;
 use me::keytag::root_sect;
 use me::spcf::init_function;
+use me::spcf::flush_function;
+use me::stylish;
 
 my $cntx;
 
 my $srcroot = undef;
 my $strdate = undef;
+my $styledir = undef;
 my $repetia = 1;
 
 sub opto__src_do {
   $srcroot = &argola::getrg();
 } &argola::setopt('-src',\&opto__src_do);
+
+sub opto__styl_do {
+  $styledir = &argola::getrg();
+} &argola::setopt('-styl',\&opto__styl_do);
 
 sub opto__date_do {
   $strdate = [];
@@ -34,6 +41,13 @@ if ( !(defined($srcroot) ) )
   ;
 }
 
+if ( !(defined($styledir) ) )
+{
+  die "\nFATAL ERROR:\n"
+    . "  Please use the -styl option to define the theme directory.\n"
+  ;
+}
+
 if ( !(defined($strdate) ) )
 {
   die "\nFATAL ERROR:\n"
@@ -41,9 +55,13 @@ if ( !(defined($strdate) ) )
   ;
 }
 
+
 $cntx = &chobxml02::context::new();
 $cntx->tag('sect',&me::keytag::root_sect::tags());
 $cntx->initf(\&me::spcf::init_function::ftfunc);
-$cntx->parsefrom($srcroot);
+$cntx->flush(\&me::spcf::flush_function::ftfunc);
+$cntx->parsefrom($srcroot,{
+  'style' => &me::stylish::load($styledir),
+});
 
 
