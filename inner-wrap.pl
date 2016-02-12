@@ -62,6 +62,7 @@ $cntx->initf(\&me::spcf::init_function::ftfunc);
 $cntx->flush(\&me::spcf::flush_function::ftfunc);
 $cntx->parsefrom($srcroot,{
   'style' => &me::stylish::load($styledir),
+  'reps' => $repetia,
 });
 
 

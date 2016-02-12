@@ -15,12 +15,16 @@ sub tag_on {
 sub tag_off {
   my $this;
   my $lc_tg;
+  my $lc_sply;
+  my $lc_dl;
   $this = $_[0];
   
   $lc_tg = $this->tgdata();
-  $this->wrraw('<span class = "cite_inormal">(');
-  $this->wrraw($lc_tg->{'txt'});
-  $this->wrraw(")</span>");
+  
+  $lc_sply = $this->argum(1);
+  $lc_dl = $lc_sply->{'style'}->dlog();
+  $lc_dl->set('content',$lc_tg->{'txt'});
+  $this->wrraw($lc_dl->run('highlight/reference'));
 }
 
 

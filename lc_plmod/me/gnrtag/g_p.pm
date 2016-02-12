@@ -10,8 +10,12 @@ sub addtags {
 }
 
 sub tag_on {
-  $_[0]->esc_tag_data('prgtx');
+  &tag_meat_on($_[0]);
   $_[0]->morph(&subcont());
+}
+
+sub tag_meat_on {
+  $_[0]->esc_tag_data('prgtx');
 }
 
 sub tag_off {
@@ -19,6 +23,7 @@ sub tag_off {
   my $lc_tg;
   $this = $_[0];
   
+  $this->untag('title');
   $lc_tg = $this->tgdata();
   $this->wrraw("\n" . '<p class = "lcn_p">');
   $this->wrraw($lc_tg->{'prgtx'});

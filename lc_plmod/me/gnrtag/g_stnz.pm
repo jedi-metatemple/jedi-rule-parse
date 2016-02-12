@@ -17,6 +17,7 @@ sub tag_off {
   my $lc_tg;
   $this = $_[0];
   
+  $this->untag('title');
   $lc_tg = $this->tgdata();
   $this->wrraw("\n" . '<p class = "lc_verse">' . "\n");
   $this->wrraw($lc_tg->{'stnztx'});
