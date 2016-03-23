@@ -92,7 +92,7 @@ sub ftfunc {
   }
   
   $lc_dlg = $lc_gprm->{'style'}->dlog();
-  $lc_dlg->set('title','Untitle Document');
+  $lc_dlg->set('title',$lc_gprm->{'title'});
   $lc_dlg->set('contents',$lc_cont_body);
   $lc_dlg->set('big-toc',$lc_cont_midtoc);
   $lc_outp = $lc_dlg->run('mainframe');

@@ -34,10 +34,21 @@ sub tag_on {
 sub tag_off {
   my $lc_tgdat;
   my $lc_gldat;
+  my $lc_expr;
   
   $lc_tgdat = $_[0]->tgdata();
   $lc_gldat = $_[0]->gldata();
   $lc_gldat->{'sctitle'}->on($lc_tgdat->{'titl'});
+  
+  # THE FOLLOWING CODE IS TEMPORARY:
+  # Until we have a _better_ way of processing the
+  # full-document's title.
+  $lc_expr = $_[0]->argum(1);
+  if ( $lc_expr->{'ttlopen'} )
+  {
+    $lc_expr->{'title'} = $lc_gldat->{'sctitle'}->{'lmn'}->[0];
+    $lc_expr->{'ttlopen'} = ( 1 > 2 );
+  }
 }
 
 

@@ -64,6 +64,8 @@ $cntx->parsefrom($srcroot,{
   'style' => &me::stylish::load($styledir),
   'reps' => $repetia,
   'date' => $strdate,
+  'title' => "Untitled Document",
+  'ttlopen' => ( 2 > 1 ),
 });
 
 
