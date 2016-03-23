@@ -11,7 +11,7 @@ my $cntx;
 my $srcroot = undef;
 my $strdate = undef;
 my $styledir = undef;
-my $repetia = 1;
+my $repetia = 0;
 
 sub opto__src_do {
   $srcroot = &argola::getrg();
@@ -63,6 +63,7 @@ $cntx->flush(\&me::spcf::flush_function::ftfunc);
 $cntx->parsefrom($srcroot,{
   'style' => &me::stylish::load($styledir),
   'reps' => $repetia,
+  'date' => $strdate,
 });
 
 

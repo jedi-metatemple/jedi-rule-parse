@@ -17,6 +17,10 @@ sub load {
   
   # UNSORTED STUFF
   
+  $lc_styl->load('midtoc-date/each.stl','each-midtoc-date');
+  $lc_styl->load('midtoc-date/another.stl','another-midtoc-date');
+  $lc_styl->load('midtoc-date/frame.stl','frame-midtoc-date');
+  
   $lc_styl->load('main-lesson-display.stl','lcn-main');
   $lc_styl->load('main-lesson-placehold.stl','lcn-phold-main');
   $lc_styl->load('main-lesson-group-display.stl','lcn-group-main');

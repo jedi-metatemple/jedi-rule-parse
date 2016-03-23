@@ -1,6 +1,7 @@
 package me::spcf::flush_function;
 use strict;
 use wraprg;
+use chobdate02;
 
 
 sub ftfunc {
@@ -16,6 +17,9 @@ sub ftfunc {
   my $lc_cont_midtoc;
   my $lc_lcn_body;
   my $lc_lcn_midtoc;
+  my $lc_date_rnd;
+  my $lc_date_src;
+  my $lc_dl;
   $this = $_[0];
   
   $lc_gdat = $this->gldata();
@@ -23,6 +27,55 @@ sub ftfunc {
   &daycode($lc_lcnx);
   
   $lc_gprm = $this->argum(1);
+  
+  
+  foreach $lc_lesson (@$lc_lcnx)
+  {
+    $lc_lesson->{'datehtm'} = '';
+  }
+  $lc_date_rnd = 0;
+  $lc_date_src = $lc_gprm->{'date'};
+  $lc_dl = $lc_gprm->{'style'}->dlog();
+  while ( $lc_date_rnd < ( ( $lc_gprm->{'reps'} ) - 0.5 ) )
+  {
+    foreach $lc_lesson (@$lc_lcnx)
+    {
+      my @lc3_inf;
+      my $lc3_date_uni;
+      my $lc3_date_all;
+      #&chobinfodig::refnalyze('AAKARA',$lc_lesson);
+      @lc3_inf = &chobdate02::moreabout($lc_date_src);
+      
+      $lc_dl->set('year',$lc_date_src->[0]);
+      $lc_dl->set('month',$lc_date_src->[1]);
+      $lc_dl->set('dayom',$lc_date_src->[2]);
+      $lc_dl->set('dayow',$lc3_inf[3]);
+      
+      $lc3_date_uni = $lc_dl->run('each-midtoc-date');
+      &chobdate02::advanso($lc_date_src,1);
+      $lc3_date_all = $lc3_date_uni;
+      
+      if ( $lc_date_rnd > 0.5 )
+      {
+        $lc_dl->set('old',$lc_lesson->{'datehtm'});
+        $lc_dl->set('new',$lc3_date_uni);
+        $lc3_date_all = $lc_dl->run('another-midtoc-date');
+      }
+      $lc_lesson->{'datehtm'} = $lc3_date_all;
+    }
+    $lc_date_rnd = int($lc_date_rnd + 1.2);
+  }
+  
+  # Frame the dates -- if we are supposed to:
+  if ( $lc_date_rnd > 0.5 )
+  {
+    foreach $lc_lesson (@$lc_lcnx)
+    {
+      $lc_dl->set('old',$lc_lesson->{'datehtm'});
+      $lc_dl->set('wide',$lc_date_rnd);
+      $lc_lesson->{'datehtm'} = $lc_dl->run('frame-midtoc-date');
+    }
+  }
   
   $lc_cont_body = '';
   $lc_cont_midtoc = '';
@@ -69,6 +122,7 @@ sub mainshow {
   $lc_dl->set('previous',$this->{'previous'});
   $lc_dl->set('next',$this->{'next'});
   $lc_dl->set('daynum',$this->{'daynum'});
+  $lc_dl->set('dates',$this->{'datehtm'});
   
   $lc_tmplnom = 'lcn-main';
   if ( $this->{'stat'} eq 'notyet' ) { $lc_tmplnom = 'lcn-phold-main'; }
