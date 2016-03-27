@@ -20,11 +20,15 @@ sub ftfunc {
   my $lc_date_rnd;
   my $lc_date_src;
   my $lc_dl;
+  my $lc_lcn_insc;
   $this = $_[0];
+  
+  
+  $lc_lcn_insc = {};
   
   $lc_gdat = $this->gldata();
   $lc_lcnx = $lc_gdat->{'lcnx'};
-  &daycode($lc_lcnx);
+  &daycode($lc_lcnx,$lc_lcn_insc);
   
   $lc_gprm = $this->argum(1);
   
@@ -43,7 +47,7 @@ sub ftfunc {
       my @lc3_inf;
       my $lc3_date_uni;
       my $lc3_date_all;
-      #&chobinfodig::refnalyze('AAKARA',$lc_lesson);
+      
       @lc3_inf = &chobdate02::moreabout($lc_date_src);
       
       $lc_dl->set('year',$lc_date_src->[0]);
@@ -88,6 +92,7 @@ sub ftfunc {
       'midtoc' => \$lc_cont_midtoc,
       'lc-body' => \$lc_lcn_body,
       'lc-midtoc' => \$lc_lcn_midtoc,
+      'segsize' => $lc_lcn_insc,
     });
   }
   
@@ -110,7 +115,11 @@ sub mainshow {
   my $lc_out;
   my $lc_dl;
   my $lc_tmplnom;
+  my $lc_segsz;
   $this = $_[0];
+  
+  $lc_segsz = $_[2]->{'segsize'};
+  
   
   
   $lc_dl = $_[1]->dlog();
@@ -123,6 +132,8 @@ sub mainshow {
   $lc_dl->set('next',$this->{'next'});
   $lc_dl->set('daynum',$this->{'daynum'});
   $lc_dl->set('dates',$this->{'datehtm'});
+  $lc_dl->set('part_num',$this->{'subpart'});
+  $lc_dl->set('part_of',$lc_segsz->{$this->{'segmenid'}});
   
   $lc_tmplnom = 'lcn-main';
   if ( $this->{'stat'} eq 'notyet' ) { $lc_tmplnom = 'lcn-phold-main'; }
@@ -164,6 +175,7 @@ sub daycode {
   my $lc_dnum;
   my $lc_code;
   my $lc_preva;
+  my $lc_lcins;
   
   $lc_lcnx = $_[0];
   $lc_dnum = 0;
@@ -194,7 +206,11 @@ sub daycode {
     if ( $lc_lcon->{'newt'} )
     {
       $lc_lcon->{'segmenid'} = int( $lc_lcon->{'segmenid'} + 1.2 );
+      $lc_lcins = 0;
     }
+    $lc_lcins = int($lc_lcins + 1.2);
+    $_[1]->{$lc_lcon->{'segmenid'}} = $lc_lcins;
+    $lc_lcon->{'subpart'} = $lc_lcins;
     $lc_preva = $lc_lcon;
   }
   
