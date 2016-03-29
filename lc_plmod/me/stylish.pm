@@ -9,9 +9,14 @@ sub load {
   $lc_styl = &chobak_style::new($_[0]);
   
   
-  $lc_styl->load('main-frame.stl','mainframe');
+  $lc_styl->load('main-frame.stl','mainframe'
+    ,"  This is the main framing, including the beginning\n"
+    ."  and the end of the HTML output.\n");
   
-  $lc_styl->load('section-in-midtoc.stl','lcn-mid-toc-sect');
+  $lc_styl->load('section-in-midtoc.stl','lcn-mid-toc-sect'
+    ,"  HTML output-format for a chapter's place in the Expanded Table of Contents.\n"
+  );
+  
   $lc_styl->load('lesson-in-midtoc.stl','lcn-mid-toc-lcn');
   
   
