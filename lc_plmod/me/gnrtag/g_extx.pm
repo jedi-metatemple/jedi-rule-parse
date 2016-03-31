@@ -1,13 +1,14 @@
-package me::gnrtag::g_expt;
+package me::gnrtag::g_extx;
 use strict;
 use me::gnrtag::g_stnz;
 use me::gnrtag::expt::g_p;
 use me::gnrtag::expt::g_title;
-use chobxml02::culprit;
+use me::stylish;
+
 
 
 sub addtags {
-  $_[0]->tag('expt',\&tag_on,\&tag_off);
+  $_[0]->tag('extx',\&tag_on,\&tag_off);
 }
 
 sub tag_on {
@@ -35,31 +36,48 @@ sub tag_off {
   my $lc_tdt;
   my $lc_sply;
   my $lc_dl;
+  my $lc_class;
+  my $lc_stlid;
+  my $lc_cprm;
   $this = $_[0];
   
   $lc_gdt = $this->gldata();
   $lc_tdt = $this->tgdata();
   
-  print STDERR "\n\n";
-  print STDERR 'BEWARE -- the <expt/> form of expanded text is slated for deprecation.' . "\n";
-  print STDERR '  Start switching to <extx/> of classes defined by <extxcl/>.' . "\n";
-  print STDERR "\nProblem found in file:\n    " . &chobxml02::culprit::identify() . ":\n";
-  print STDERR "\n";
-  sleep(5);
-  
-  if ( $lc_gdt->{'title'}->siz() < 0.5 )
+  $lc_class = $this->pram('cls');
+  if ( !(&me::stylish::lookup($lc_class,$lc_stlid,$lc_cprm)) )
   {
-    die "\n"
-      . "YOU FORGOT TO INCLUDE A TITLE <title></title>\n"
-      . "in an EXPT <expt></expt> area!!!\n"
-    . "\n";
+    die "\nNo such -extx- class: " . $lc_class . ":\n\n";
+  }
+  
+  
+  if ( $lc_cprm->{'rqtitle'} )
+  {
+    if ( $lc_gdt->{'title'}->siz() < 0.5 )
+    {
+      die "\n"
+        . "YOU FORGOT TO INCLUDE A TITLE <title></title>\n"
+        . 'in an EXPT <extx cls="' . $lc_class . '"></extx> area!!!' . "\n"
+      . "\n";
+    }
+  }
+  
+  if ( $lc_cprm->{'fbdtitle'} )
+  {
+    if ( $lc_gdt->{'title'}->siz() > 0.5 )
+    {
+      die "\n"
+        . "TITLE FORBIDDEN <title></title>\n"
+        . 'in an EXPT <extx cls="' . $lc_class . '"></extx> area!!!' . "\n"
+      . "\n";
+    }
   }
   
   $lc_sply = $this->argum(1);
   $lc_dl = $lc_sply->{'style'}->dlog();
   $lc_dl->set('content',$lc_tdt->{'txt'});
   $lc_dl->set('title',$lc_gdt->{'title'}->see());
-  $this->wrraw($lc_dl->run('contain/expanded-text'));
+  $this->wrraw($lc_dl->run(('extx/cls-' . $lc_stlid)));
   
   # Restore the 'title'
   $lc_gdt->{'title'} = $lc_tdt->{'title'};
@@ -77,6 +95,9 @@ sub subcont {
   return $lc_cont;
 }
 
+
+
+1;
 
 
 1;

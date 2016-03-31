@@ -3,6 +3,7 @@ use strict;
 use me::gnrtag::g_stnz;
 use me::gnrtag::g_p;
 use me::gnrtag::g_expt;
+use me::gnrtag::g_extx;
 use chobak_stack;
 
 sub addtags {
@@ -63,6 +64,7 @@ sub subcont {
   &me::gnrtag::g_stnz::addtags($lc_cont);
   &me::gnrtag::g_p::addtags($lc_cont);
   &me::gnrtag::g_expt::addtags($lc_cont);
+  &me::gnrtag::g_extx::addtags($lc_cont);
   
   return $lc_cont;
 }
