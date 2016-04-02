@@ -6,6 +6,16 @@ Following is a list of all the template files used by this parser - followed
 by a full list of all the parameter variables that this template is _documented_
 here as using.
 
+### lesson-in-midtoc.stl
+HTML output-format for a lesson's entry in the Expanded Table of Contents.
+
+  * __ttl1__: The title of the containing chapter.
+  * __ttl2__: The title of the containing section (generally, that being the
+full document).
+  * __daynum__: The day-number of this lesson in the cycle. (This can be used
+as an ID-number for the lesson.)
+  * __dates__: The collective HTML code for the dates on which this lesson is featured.
+
 ### main-frame.stl
 This is the main framing, including the beginning and the end of the HTML output.
 
@@ -30,15 +40,5 @@ full document).
   * __content__: The HTML of the rest of this section of the Expanded Table
 of Contents (which should include _within_ it an entry for each lesson).
   * __chapt\_id__: The id-number of the chapter.
-
-### lesson-in-midtoc.stl
-HTML output-format for a lesson's entry in the Expanded Table of Contents.
-
-  * __ttl1__: The title of the containing chapter.
-  * __ttl2__: The title of the containing section (generally, that being the
-full document).
-  * __daynum__: The day-number of this lesson in the cycle. (This can be used
-as an ID-number for the lesson.)
-  * __dates__: The collective HTML code for the dates on which this lesson is featured.
 
 
