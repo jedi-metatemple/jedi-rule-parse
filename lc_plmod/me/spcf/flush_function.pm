@@ -21,6 +21,7 @@ sub ftfunc {
   my $lc_date_src;
   my $lc_dl;
   my $lc_lcn_insc;
+  my $lc_top_toc;
   $this = $_[0];
   
   
@@ -29,6 +30,7 @@ sub ftfunc {
   $lc_gdat = $this->gldata();
   $lc_lcnx = $lc_gdat->{'lcnx'};
   &daycode($lc_lcnx,$lc_lcn_insc);
+  &enumera($lc_lcnx);
   
   $lc_gprm = $this->argum(1);
   
@@ -85,6 +87,7 @@ sub ftfunc {
   $lc_cont_midtoc = '';
   $lc_lcn_body = '';
   $lc_lcn_midtoc = '';
+  $lc_top_toc = '';
   foreach $lc_lesson (@$lc_lcnx)
   {
     &mainshow($lc_lesson,$lc_gprm->{'style'},{
@@ -92,6 +95,7 @@ sub ftfunc {
       'midtoc' => \$lc_cont_midtoc,
       'lc-body' => \$lc_lcn_body,
       'lc-midtoc' => \$lc_lcn_midtoc,
+      'lc-headtoc' => \$lc_top_toc,
       'segsize' => $lc_lcn_insc,
     });
   }
@@ -100,6 +104,7 @@ sub ftfunc {
   $lc_dlg->set('title',$lc_gprm->{'title'});
   $lc_dlg->set('contents',$lc_cont_body);
   $lc_dlg->set('big-toc',$lc_cont_midtoc);
+  $lc_dlg->set('small-toc',$lc_top_toc);
   $lc_outp = $lc_dlg->run('mainframe');
   #system("echo",": : :\n" . $lc_outp . "\n: : :");
   
@@ -134,6 +139,8 @@ sub mainshow {
   $lc_dl->set('dates',$this->{'datehtm'});
   $lc_dl->set('part_num',$this->{'subpart'});
   $lc_dl->set('part_of',$lc_segsz->{$this->{'segmenid'}});
+  $lc_dl->set('chapt_id',$this->{'chapt_id'});
+  
   
   $lc_tmplnom = 'lcn-main';
   if ( $this->{'stat'} eq 'notyet' ) { $lc_tmplnom = 'lcn-phold-main'; }
@@ -147,9 +154,11 @@ sub mainshow {
     my $lc2_a;
     my $lc2_cont;
     
+    
     $lc2_a = $_[1]->dlog();
     $lc2_a->set('ttl1',$this->{'ttl'}->see());
     $lc2_a->set('ttl2',$this->{'ttl'}->dpsee(1));
+    $lc2_a->set('chapt_id',$this->{'chapt_id'});
     
     $lc_out = $_[2]->{'lc-midtoc'};
     $lc2_cont = $$lc_out;
@@ -164,9 +173,37 @@ sub mainshow {
     $$lc_out = '';
     $lc_out = $_[2]->{'body'};
     $$lc_out .= $lc2_a->run('lcn-group-main');
+    
+    $lc_out = $_[2]->{'lc-headtoc'};
+    $$lc_out .= $lc2_a->run('contents-by-chapter');
   }
   
   return $lc_out;
+}
+
+sub enumera {
+  my $lc_lcon;
+  my $lc_lcnx;
+  my $lc_chapt;
+  my $lc_prv_chapt;
+  
+  $lc_lcnx = $_[0];
+  $lc_prv_chapt = 0;
+  $lc_chapt = 1;
+  foreach $lc_lcon (@$lc_lcnx)
+  {
+    $lc_lcon->{'chapt_id'} = $lc_chapt;
+    
+    # The chapter is incremented conditionally *after* it's
+    # assignment to the current lesson rather than *before*,
+    # because the 'wayout' variable based on which it *decides*
+    # this flags the *last* lesson in the chapter, not the first.
+    if ( $lc_lcon->{'wayout'} )
+    {
+      $lc_prv_chapt = $lc_chapt;
+      $lc_chapt = int($lc_chapt + 1.2);
+    }
+  }
 }
 
 sub daycode {

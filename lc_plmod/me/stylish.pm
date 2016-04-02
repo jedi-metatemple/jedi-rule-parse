@@ -68,6 +68,9 @@ sub load {
     ,"  This is the main framing, including the beginning\n"
     ."  and the end of the HTML output.\n");
   
+  $lc_styl->load('main-table-of-contents.stl','contents-by-chapter'
+    ,"  A chapter's entry in the compact table-of-contents.\n");
+  
   $lc_styl->load('section-in-midtoc.stl','lcn-mid-toc-sect'
     ,"  HTML output-format for a chapter's place in the Expanded Table of Contents.\n"
   );
