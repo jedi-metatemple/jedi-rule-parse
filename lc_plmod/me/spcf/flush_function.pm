@@ -38,6 +38,7 @@ sub ftfunc {
   foreach $lc_lesson (@$lc_lcnx)
   {
     $lc_lesson->{'datehtm'} = '';
+    $lc_lesson->{'mn-datehtm'} = '';
   }
   $lc_date_rnd = 0;
   $lc_date_src = $lc_gprm->{'date'};
@@ -49,6 +50,8 @@ sub ftfunc {
       my @lc3_inf;
       my $lc3_date_uni;
       my $lc3_date_all;
+      my $lc3_b_date_uni;
+      my $lc3_b_date_all;
       
       @lc3_inf = &chobdate02::moreabout($lc_date_src);
       
@@ -57,17 +60,30 @@ sub ftfunc {
       $lc_dl->set('dayom',$lc_date_src->[2]);
       $lc_dl->set('dayow',$lc3_inf[3]);
       
+      # Original Generation of TOC Date
       $lc3_date_uni = $lc_dl->run('each-midtoc-date');
       &chobdate02::advanso($lc_date_src,1);
       $lc3_date_all = $lc3_date_uni;
       
+      # Original Generation of Main Body Date
+      $lc3_b_date_uni = $lc_dl->run('each-mainbd-date');
+      &chobdate02::advanso($lc_date_src,1);
+      $lc3_b_date_all = $lc3_b_date_uni;
+      
       if ( $lc_date_rnd > 0.5 )
       {
+        # Collectivization of TOC Date
         $lc_dl->set('old',$lc_lesson->{'datehtm'});
         $lc_dl->set('new',$lc3_date_uni);
         $lc3_date_all = $lc_dl->run('another-midtoc-date');
+        
+        # Collectivization of Main Body Date
+        $lc_dl->set('old',$lc_lesson->{'mn-datehtm'});
+        $lc_dl->set('new',$lc3_b_date_uni);
+        $lc3_b_date_all = $lc_dl->run('another-mainbd-date');
       }
       $lc_lesson->{'datehtm'} = $lc3_date_all;
+      $lc_lesson->{'mn-datehtm'} = $lc3_b_date_all;
     }
     $lc_date_rnd = int($lc_date_rnd + 1.2);
   }
@@ -77,9 +93,15 @@ sub ftfunc {
   {
     foreach $lc_lesson (@$lc_lcnx)
     {
+      # Framing of TOC Date
       $lc_dl->set('old',$lc_lesson->{'datehtm'});
       $lc_dl->set('wide',$lc_date_rnd);
       $lc_lesson->{'datehtm'} = $lc_dl->run('frame-midtoc-date');
+      
+      # Framing of Main Body Date
+      $lc_dl->set('old',$lc_lesson->{'mn-datehtm'});
+      $lc_dl->set('wide',$lc_date_rnd);
+      $lc_lesson->{'mn-datehtm'} = $lc_dl->run('frame-mainbd-date');
     }
   }
   
@@ -136,7 +158,7 @@ sub mainshow {
   $lc_dl->set('previous',$this->{'previous'});
   $lc_dl->set('next',$this->{'next'});
   $lc_dl->set('daynum',$this->{'daynum'});
-  $lc_dl->set('dates',$this->{'datehtm'});
+  $lc_dl->set('dates',$this->{'mn-datehtm'});
   $lc_dl->set('part_num',$this->{'subpart'});
   $lc_dl->set('part_of',$lc_segsz->{$this->{'segmenid'}});
   $lc_dl->set('chapt_id',$this->{'chapt_id'});
@@ -147,6 +169,7 @@ sub mainshow {
   $lc_out = $_[2]->{'lc-body'};
   $$lc_out .= $lc_dl->run($lc_tmplnom);
   
+  $lc_dl->set('dates',$this->{'datehtm'});
   $lc_out = $_[2]->{'lc-midtoc'};
   $$lc_out .= $lc_dl->run('lcn-mid-toc-lcn');
   

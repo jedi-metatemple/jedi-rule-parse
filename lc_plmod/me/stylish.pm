@@ -82,16 +82,21 @@ sub load {
   $lc_styl->load('midtoc-date/frame.stl','frame-midtoc-date');
   
   $lc_styl->load('main-lesson-group-display.stl','lcn-group-main');
-  
-  
-  # UNSORTED STUFF
-  
   $lc_styl->load('main-lesson-display.stl','lcn-main');
   $lc_styl->load('main-lesson-placehold.stl','lcn-phold-main');
+  
+  $lc_styl->load('mainbd-date/each.stl','each-mainbd-date');
+  $lc_styl->load('mainbd-date/another.stl','another-mainbd-date');
+  $lc_styl->load('mainbd-date/frame.stl','frame-mainbd-date');
   
   $lc_styl->load('highlight/document-name.stl','highlight/docname');
   $lc_styl->load('highlight/emphasis.stl','highlight/emphasis');
   $lc_styl->load('highlight/vocabulary.stl','highlight/vocabulary');
+  
+  
+  # UNSORTED STUFF
+  
+  
   $lc_styl->load('highlight/reference.stl','highlight/reference');
   
   $lc_styl->load('contain/expanded-text.stl','contain/expanded-text');
