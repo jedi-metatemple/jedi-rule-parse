@@ -62,13 +62,15 @@ sub ftfunc {
       
       # Original Generation of TOC Date
       $lc3_date_uni = $lc_dl->run('each-midtoc-date');
-      &chobdate02::advanso($lc_date_src,1);
       $lc3_date_all = $lc3_date_uni;
       
       # Original Generation of Main Body Date
       $lc3_b_date_uni = $lc_dl->run('each-mainbd-date');
-      &chobdate02::advanso($lc_date_src,1);
       $lc3_b_date_all = $lc3_b_date_uni;
+      
+      # Now we advance the date to the next day for
+      # the benefit of the next round.
+      &chobdate02::advanso($lc_date_src,1);
       
       if ( $lc_date_rnd > 0.5 )
       {
