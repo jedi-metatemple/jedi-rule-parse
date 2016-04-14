@@ -2,6 +2,7 @@ package me::gnrtag::expt::g_p;
 use strict;
 use me::gnrtag::g_p;
 use me::gnrtag::expt::g_a;
+use me::gnrtag::expt::g_info;
 
 sub addtags {
   $_[0]->tag('p',\&tag_on,\&me::gnrtag::g_p::tag_off);
@@ -18,6 +19,7 @@ sub subcont {
   
   $lc_cont = &me::gnrtag::g_p::subcont();
   &me::gnrtag::expt::g_a::addtags($lc_cont);
+  &me::gnrtag::expt::g_info::addtags($lc_cont);
   
   return $lc_cont;
 }

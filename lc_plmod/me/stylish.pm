@@ -101,6 +101,11 @@ sub load {
   
   $lc_styl->load('contain/expanded-text.stl','contain/expanded-text');
   $lc_styl->load('link/off-of-doc.stl','link/off-of-doc');
+  $lc_styl->load('link/further-info.stl','link/info',
+    "As with 'link/off-of-doc.stl', this template is a HyperLink,\n" .
+    "but rather than a HyperLink to just _somewhere_ on the web,\n" .
+    "it links to a resource on the link's accompanying web-site."
+  );
   
   
   if ( $lc_not_first < 5 )
