@@ -5,12 +5,14 @@ use me::keytag::root_sect;
 use me::spcf::init_function;
 use me::spcf::flush_function;
 use me::stylish;
+use me::language;
 
 my $cntx;
 
 my $srcroot = undef;
 my $strdate = undef;
 my $styledir = undef;
+my $langdir = undef;
 my $repetia = 0;
 
 sub opto__src_do {
@@ -32,6 +34,12 @@ sub opto__rep_do {
   $repetia = &argola::getrg();
 } &argola::setopt('-rep',\&opto__rep_do);
 
+sub opto__lang_do {
+  $langdir = &argola::getrg();
+} &argola::setopt('-lang',\&opto__lang_do);
+
+
+
 &argola::runopts();
 
 if ( !(defined($srcroot) ) )
@@ -45,6 +53,13 @@ if ( !(defined($styledir) ) )
 {
   die "\nFATAL ERROR:\n"
     . "  Please use the -styl option to define the theme directory.\n"
+  ;
+}
+
+if ( !(defined($langdir) ) )
+{
+  die "\nFATAL ERROR:\n"
+    . "  Please use the -lang option to define the language-resource directory.\n"
   ;
 }
 
@@ -62,6 +77,7 @@ $cntx->initf(\&me::spcf::init_function::ftfunc);
 $cntx->flush(\&me::spcf::flush_function::ftfunc);
 $cntx->parsefrom($srcroot,{
   'style' => &me::stylish::load($styledir),
+  'lang' => &me::language::load($langdir),
   'reps' => $repetia,
   'date' => $strdate,
   'title' => "Untitled Document",
