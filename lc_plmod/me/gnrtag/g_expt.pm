@@ -3,6 +3,7 @@ use strict;
 use me::gnrtag::g_stnz;
 use me::gnrtag::expt::g_p;
 use me::gnrtag::expt::g_title;
+use me::ivrsn;
 use chobxml02::culprit;
 
 
@@ -40,12 +41,20 @@ sub tag_off {
   $lc_gdt = $this->gldata();
   $lc_tdt = $this->tgdata();
   
-  print STDERR "\n\n";
-  print STDERR 'BEWARE -- the <expt/> form of expanded text is slated for deprecation.' . "\n";
-  print STDERR '  Start switching to <extx/> of classes defined by <extxcl/>.' . "\n";
-  print STDERR "\nProblem found in file:\n    " . &chobxml02::culprit::identify() . ":\n";
-  print STDERR "\n";
-  sleep(5);
+  if ( &me::ivrsn::echo_crnt() > 1.5 )
+  {
+    print STDERR "\n";
+    print STDERR 'BEWARE -- the <expt/> form of expanded text is deprecated as.' . "\n";
+    print STDERR '    of Interface Version 2.' . "\n";
+    print STDERR '  Start switching to <extx/> of classes defined by <extxcl/>.' . "\n";
+    print STDERR '  Alternatively, if you are using this to parse an older-version' . "\n";
+    print STDERR '    document, and therefore have to accept the presence of' . "\n";
+    print STDERR '    <expt/>, run the parser with Interface Version 1 by adding' . "\n";
+    print STDERR '    the arguments: ' . "'-vrsn 1' to the parser's command-line.\n";
+    print STDERR "\nProblem found in file:\n    " . &chobxml02::culprit::identify() . ":\n";
+    print STDERR "\n";
+    exit(2);
+  }
   
   if ( $lc_gdt->{'title'}->siz() < 0.5 )
   {

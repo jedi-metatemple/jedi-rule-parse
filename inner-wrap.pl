@@ -6,6 +6,7 @@ use me::spcf::init_function;
 use me::spcf::flush_function;
 use me::stylish;
 use me::language;
+use me::ivrsn;
 
 my $cntx;
 
@@ -37,6 +38,14 @@ sub opto__rep_do {
 sub opto__lang_do {
   $langdir = &argola::getrg();
 } &argola::setopt('-lang',\&opto__lang_do);
+
+sub opto__vrsn_do {
+  &me::ivrsn::stable(&argola::getrg());
+} &argola::setopt('-vrsn',\&opto__vrsn_do);
+
+sub opto__exvrsn_do {
+  &me::ivrsn::experim(&argola::getrg());
+} &argola::setopt('-exvrsn',\&opto__exvrsn_do);
 
 
 
