@@ -7,14 +7,18 @@ use me::spcf::flush_function;
 use me::stylish;
 use me::language;
 use me::ivrsn;
+use me::globopt;
 
 my $cntx;
+my $opto;
 
 my $srcroot = undef;
 my $strdate = undef;
 my $styledir = undef;
 my $langdir = undef;
 my $repetia = 0;
+
+$opto = &me::globopt::refren();
 
 sub opto__src_do {
   $srcroot = &argola::getrg();
@@ -23,6 +27,11 @@ sub opto__src_do {
 sub opto__styl_do {
   $styledir = &argola::getrg();
 } &argola::setopt('-styl',\&opto__styl_do);
+
+sub opto__fcopt_do {
+  $opto->{'fcopt'} = (2>1);
+} &argola::setopt('-fcopt',\&opto__fcopt_do);
+$opto->{'fcopt'} = (1>2);
 
 sub opto__date_do {
   $strdate = [];
@@ -82,6 +91,10 @@ if ( !(defined($strdate) ) )
 
 $cntx = &chobxml02::context::new();
 $cntx->tag('sect',&me::keytag::root_sect::tags());
+if ( $opto->{'fcopt'} )
+{
+  $cntx->tag('mfdldml',&me::keytag::root_sect::tags());
+}
 $cntx->initf(\&me::spcf::init_function::ftfunc);
 $cntx->flush(\&me::spcf::flush_function::ftfunc);
 $cntx->parsefrom($srcroot,{

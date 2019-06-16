@@ -1,10 +1,9 @@
-package me::gnrtag::g_sect;
+package me::gnrtag::g_pream;
 use strict;
 use me::gnrtag::g_include;
 use me::gnrtag::g_notice;
 use me::gnrtag::g_lcn;
 use me::gnrtag::g_extxcl;
-use me::gnrtag::g_pream;
 use me::globopt;
 
 
@@ -12,11 +11,17 @@ my $opto;
 
 $opto = &me::globopt::refren();
 
+
+sub addtags {
+  $_[0]->tag('pream',\&tag_on,\&tag_off);
+}
+
+
 sub tag_on {
   my $lc_gdata;
   my $lc_tdata;
 
-  $opto->{'num_chapt'} = (2>1);
+  $opto->{'num_chapt'} = (1>2);
   
   # BEGIN LITANY OF TITLESET PRESERVATION
   $_[0]->untag('title'); # Too late if title for supersect not yet declared
@@ -51,12 +56,7 @@ sub subcont {
   my $lc_cont;
   
   $lc_cont = &me::gnrtag::g_include::subcont();
-  $lc_cont->tag('sect',\&tag_on,\&tag_off);
   $lc_cont->tag(&me::gnrtag::g_notice::full_tag());
-  if ( $opto->{'fcopt'} )
-  {
-    &me::gnrtag::g_pream::addtags($lc_cont);
-  }
   &me::gnrtag::g_lcn::addtags($lc_cont);
   &me::gnrtag::g_extxcl::addtags($lc_cont);
   
