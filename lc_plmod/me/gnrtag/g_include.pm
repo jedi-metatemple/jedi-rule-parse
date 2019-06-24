@@ -2,6 +2,14 @@ package me::gnrtag::g_include;
 use strict;
 use chobxml02::context;
 use me::spctag::g_sect_title;
+use me::globopt;
+
+
+my $opto;
+
+
+$opto = &me::globopt::refren();
+
 
 sub subcont {
   my $lc_cont;
@@ -9,6 +17,10 @@ sub subcont {
   $lc_cont = &chobxml02::context::new();
   $lc_cont->tag('sub',\&nothing,\&nothing);
   $lc_cont->tag('include',\&tag_on,\&tag_off);
+  if ( $opto->{'fcopt'} )
+  {
+    $lc_cont->tag('inc',\&tag_on,\&tag_off);
+  }
   &me::spctag::g_sect_title::addtags($lc_cont);
   return $lc_cont;
 }
