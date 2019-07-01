@@ -1,6 +1,7 @@
 package me::stylish;
 use strict;
 use chobak_style;
+use me::globopt;
 
 my @excl_lis = ();
 my %excl_cod = {};
@@ -8,6 +9,9 @@ my %excl_exp = {};
 my %excl_prm = {};
 my $styl_yet = 0;
 my $styl_ref;
+
+my $opto;
+$opto = &me::globopt::refren();
 
 sub load_excl {
   my $lc_cn;
@@ -58,6 +62,7 @@ sub load {
   my $lc_each;
   
   $lc_styl = &chobak_style::new($_[0]);
+  $lc_styl->moreswaps($opto->{'styleswp'});
   
   $lc_not_first = $styl_yet;
   $styl_yet = 10;

@@ -20,6 +20,8 @@ my $repetia = 0;
 
 $opto = &me::globopt::refren();
 
+$opto->{'styleswp'} = [];
+
 sub opto__src_do {
   $srcroot = &argola::getrg();
 } &argola::setopt('-src',\&opto__src_do);
@@ -55,6 +57,16 @@ sub opto__vrsn_do {
 sub opto__exvrsn_do {
   &me::ivrsn::experim(&argola::getrg());
 } &argola::setopt('-exvrsn',\&opto__exvrsn_do);
+
+sub opto__repl_do {
+  my $lc_prv;
+  my $lc_neo;
+  my $lc_swp;
+  $lc_prv = &argola::getrg();
+  $lc_neo = &argola::getrg();
+  $lc_swp = $opto->{'styleswp'};
+  @$lc_swp = (@$lc_swp, ['repl',$lc_prv,$lc_neo]);
+} &argola::setopt('-repl',\&opto__repl_do);
 
 
 
