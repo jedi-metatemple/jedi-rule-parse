@@ -3,6 +3,8 @@ use strict;
 use wraprg;
 use chobdate02;
 
+my $lcn_in_ch_count;
+my $lcn_in_ch_total;
 
 sub ftfunc {
   my $this;
@@ -112,6 +114,15 @@ sub ftfunc {
   $lc_lcn_body = '';
   $lc_lcn_midtoc = '';
   $lc_top_toc = '';
+
+  $lcn_in_ch_count = {};
+  $lcn_in_ch_total = {};
+
+  foreach $lc_lesson (@$lc_lcnx)
+  {
+    &painshow($lc_lesson);
+  }
+
   foreach $lc_lesson (@$lc_lcnx)
   {
     &mainshow($lc_lesson,$lc_gprm->{'style'},{
@@ -139,13 +150,32 @@ sub ftfunc {
   system($lc_wricm);
 }
 
+sub painshow {
+  my $this;
+  my $lc_hnd;
+  my $lc_lcn_count;
+  $this = $_[0];
+
+  $lc_hnd = $lcn_in_ch_total;
+  $lc_lcn_count = $lc_hnd->{$this->{'chapt_id'}};
+  $lc_lcn_count = int($lc_lcn_count + 1.2);
+  $lc_hnd->{$this->{'chapt_id'}} = $lc_lcn_count;
+}
+
 sub mainshow {
   my $this;
   my $lc_out;
   my $lc_dl;
   my $lc_tmplnom;
   my $lc_segsz;
+  my $lc_hnd;
+  my $lc_lcn_count;
   $this = $_[0];
+
+  $lc_hnd = $lcn_in_ch_count;
+  $lc_lcn_count = $lc_hnd->{$this->{'chapt_id'}};
+  $lc_lcn_count = int($lc_lcn_count + 1.2);
+  $lc_hnd->{$this->{'chapt_id'}} = $lc_lcn_count;
   
   $lc_segsz = $_[2]->{'segsize'};
   
@@ -164,6 +194,9 @@ sub mainshow {
   $lc_dl->set('part_num',$this->{'subpart'});
   $lc_dl->set('part_of',$lc_segsz->{$this->{'segmenid'}});
   $lc_dl->set('chapt_id',$this->{'chapt_id'});
+
+  $lc_dl->set('lesson_in_ch_count',$lcn_in_ch_count->{$this->{'chapt_id'}});
+  $lc_dl->set('lesson_in_ch_total',$lcn_in_ch_total->{$this->{'chapt_id'}});
   
   
   $lc_tmplnom = 'lcn-main';
