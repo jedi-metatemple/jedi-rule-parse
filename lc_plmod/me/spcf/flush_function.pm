@@ -2,9 +2,14 @@ package me::spcf::flush_function;
 use strict;
 use wraprg;
 use chobdate02;
+use me::globopt;
 
 my $lcn_in_ch_count;
 my $lcn_in_ch_total;
+
+my $opto;
+
+$opto = &me::globopt::refren();
 
 sub ftfunc {
   my $this;
@@ -170,6 +175,8 @@ sub mainshow {
   my $lc_segsz;
   my $lc_hnd;
   my $lc_lcn_count;
+  my $lc_xtra;
+  my $lc_extr;
   $this = $_[0];
 
   $lc_hnd = $lcn_in_ch_count;
@@ -197,6 +204,16 @@ sub mainshow {
 
   $lc_dl->set('lesson_in_ch_count',$lcn_in_ch_count->{$this->{'chapt_id'}});
   $lc_dl->set('lesson_in_ch_total',$lcn_in_ch_total->{$this->{'chapt_id'}});
+
+  $lc_xtra = $opto->{'extras'};
+  foreach $lc_extr (@$lc_xtra)
+  {
+    my $lc2_nom;
+    my $lc2_val;
+    $lc2_nom = 'x_' . $lc_extr->[0];
+    $lc2_val = $lc_extr->[1];
+    $lc_dl->set($lc2_nom,$lc2_val);
+  }
   
   
   $lc_tmplnom = 'lcn-main';
