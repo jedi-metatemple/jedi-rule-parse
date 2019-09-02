@@ -8,6 +8,7 @@ use me::stylish;
 use me::language;
 use me::ivrsn;
 use me::globopt;
+use Time::JulianDay;
 
 my $cntx;
 my $opto;
@@ -109,6 +110,16 @@ if ( !(defined($strdate) ) )
   die "\nFATAL ERROR:\n"
     . "  Please use the -date option to define the cycle start-date.\n"
   ;
+}
+
+$opto->{'strdate'} = $strdate;
+{
+  my $lc_jda;
+  my $lc_jdb;
+  $lc_jda = julian_day($strdate->[0],$strdate->[1],$strdate->[2]);
+  $lc_jdb = int($lc_jda - 0.8);
+  $opto->{'strjuld'} = $lc_jda;
+  $opto->{'prejuld'} = $lc_jdb;
 }
 
 

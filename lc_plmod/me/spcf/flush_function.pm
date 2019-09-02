@@ -3,13 +3,42 @@ use strict;
 use wraprg;
 use chobdate02;
 use me::globopt;
+use Time::JulianDay;
 
 my $lcn_in_ch_count;
 my $lcn_in_ch_total;
 
 my $opto;
 
+my $month_tarray = [ 'x'
+  , 'January'
+  , 'February'
+  , 'March'
+  , 'April'
+  , 'May'
+  , 'June'
+  , 'July'
+  , 'August'
+  , 'September'
+  , 'October'
+  , 'November'
+  , 'December'
+];
+
+my $week_tarray = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+'Sunday'];
+
+
 $opto = &me::globopt::refren();
+
+
 
 sub ftfunc {
   my $this;
@@ -177,6 +206,10 @@ sub mainshow {
   my $lc_lcn_count;
   my $lc_xtra;
   my $lc_extr;
+  my @lc_date_array;
+  my $lc_today_jul;
+  my $lc_today_dayow_a;
+  my $lc_today_dayow_b;
   $this = $_[0];
 
   $lc_hnd = $lcn_in_ch_count;
@@ -186,6 +219,11 @@ sub mainshow {
   
   $lc_segsz = $_[2]->{'segsize'};
   
+  $lc_today_jul = int($opto->{'prejuld'} + $this->{'daynum'} + 0.2);
+  $lc_today_dayow_a = (int($lc_today_jul - 5.8) % 7);
+  $lc_today_dayow_b = $week_tarray->[$lc_today_dayow_a];
+  @lc_date_array = inverse_julian_day($lc_today_jul);
+
   
   
   $lc_dl = $_[1]->dlog();
@@ -201,6 +239,11 @@ sub mainshow {
   $lc_dl->set('part_num',$this->{'subpart'});
   $lc_dl->set('part_of',$lc_segsz->{$this->{'segmenid'}});
   $lc_dl->set('chapt_id',$this->{'chapt_id'});
+  $lc_dl->set('show_year',$lc_date_array[0]);
+  $lc_dl->set('show_n_month',$lc_date_array[1]);
+  $lc_dl->set('show_month',$month_tarray->[$lc_date_array[1]]);
+  $lc_dl->set('show_dayom',$lc_date_array[2]);
+  $lc_dl->set('show_dayow',$lc_today_dayow_b);
 
   $lc_dl->set('lesson_in_ch_count',$lcn_in_ch_count->{$this->{'chapt_id'}});
   $lc_dl->set('lesson_in_ch_total',$lcn_in_ch_total->{$this->{'chapt_id'}});
